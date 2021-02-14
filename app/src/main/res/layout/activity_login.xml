@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
+    android:orientation="vertical">
+
+
+   <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:theme="@style/Theme.AppCompat.Light">
+
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/login_title"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/colorWhite" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+
+            <ImageView
+                android:id="@+id/img_eva_copa"
+                android:layout_width="match_parent"
+                android:layout_weight="0.30"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/login_jallalla" />
+
+        <LinearLayout
+            android:id="@+id/cardView"
+            android:layout_width="match_parent"
+            android:layout_weight="0.70"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/dimen_dp_large">
+
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/dimen_dp_large"
+                        android:orientation="vertical">
+
+
+                        <EditText
+                            android:id="@+id/et_ci"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/dimen_dp_large"
+                            android:background="@drawable/rounded_rectangle_margin_accent"
+                            android:gravity="start|top"
+                            android:hint="@string/login_ci"
+                            android:paddingLeft="@dimen/dimen_dp_medium"
+                            android:paddingTop="@dimen/dimen_dp_medium"
+                            android:paddingBottom="@dimen/dimen_dp_medium" />
+
+
+                        <EditText
+                            android:id="@+id/et_password"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/dimen_dp_large"
+                            android:background="@drawable/rounded_rectangle_margin_accent"
+                            android:gravity="start|top"
+                            android:hint="@string/login_password"
+                            android:paddingLeft="@dimen/dimen_dp_medium"
+                            android:paddingTop="@dimen/dimen_dp_medium"
+                            android:paddingBottom="@dimen/dimen_dp_medium" />
+
+                        <Button
+                            android:id="@+id/btn_register"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                             android:layout_marginBottom="@dimen/dimen_dp_xlarge"
+                            android:layout_weight="0.01"
+                            android:background="@drawable/rounded_rectangle_shape_red"
+                            android:onClick="login"
+                            android:paddingTop="@dimen/dimen_dp_large"
+                            android:paddingBottom="@dimen/dimen_dp_large"
+                            android:text="@string/login_action"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="@color/colorWhite" />
+
+                    </LinearLayout>
+                </LinearLayout>
+            </ScrollView>
+
+        </LinearLayout>
+
+
+
+
+    </LinearLayout>
+</LinearLayout>

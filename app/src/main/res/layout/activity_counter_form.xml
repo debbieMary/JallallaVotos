@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:background="@color/colorPrimaryDark"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:theme="@style/Theme.AppCompat.Light">
+
+        <ImageView
+            android:id="@+id/img_back"
+            android:layout_width="wrap_content"
+            android:onClick="goBack"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_back" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/counter_form_title"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/colorWhite" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <TextView
+        android:id="@+id/lbl_info"
+        android:layout_width="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/colorWhite"
+        android:layout_marginTop="@dimen/dimen_sp_large"
+        android:layout_marginLeft="@dimen/dimen_sp_large"
+        android:layout_marginRight="@dimen/dimen_sp_large"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="wrap_content"
+        android:text="Unidad Educativa" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_margin="@dimen/dimen_sp_large"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dimen_sp_large"
+                android:layout_marginBottom="@dimen/dimen_dp_small"
+                android:layout_marginTop="@dimen/dimen_dp_medium"
+                app:cardBackgroundColor="@color/colorWhite"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="2dp"
+                app:cardPreventCornerOverlap="false"
+                app:cardUseCompatPadding="false">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_margin="@dimen/dimen_dp_small"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+
+                    <ImageView
+                        android:id="@+id/img_jallalla"
+                        android:layout_width="100dp"
+                        android:layout_margin="@dimen/dimen_dp_small"
+                        android:layout_height="100dp"
+                        app:srcCompat="@drawable/partido_jallalla" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_margin="@dimen/dimen_dp_small"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/lbl_jallalla"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/colorBlack"
+                            android:textStyle="bold"
+                            android:text="@string/counter_partido_jallalla" />
+
+
+                        <EditText
+                            android:id="@+id/et_alcalde_jallalla"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/counter_votos_alcalde"
+                            android:inputType="number"
+                            android:ems="10"/>
+
+                        <EditText
+                            android:id="@+id/et_concejal_jallalla"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:inputType="number"
+                            android:hint="@string/counter_votos_concejal"
+                            />
+                    </LinearLayout>
+
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dimen_sp_large"
+                android:layout_marginBottom="@dimen/dimen_dp_small"
+                android:layout_marginTop="@dimen/dimen_dp_medium"
+                app:cardBackgroundColor="@color/colorWhite"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="2dp"
+                app:cardPreventCornerOverlap="false"
+                app:cardUseCompatPadding="false">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_margin="@dimen/dimen_dp_small"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+
+                    <ImageView
+                        android:id="@+id/img_mas"
+                        android:layout_width="100dp"
+                        android:layout_margin="@dimen/dimen_dp_small"
+                        android:layout_height="100dp"
+                        app:srcCompat="@drawable/partido_mas" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_margin="@dimen/dimen_dp_small"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/lbl_mas"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/colorBlack"
+                            android:textStyle="bold"
+                            android:text="@string/counter_partido_mas" />
+
+
+                        <EditText
+                            android:id="@+id/et_alcalde_mas"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/counter_votos_alcalde"
+                            android:inputType="number"
+                            android:ems="10"/>
+
+                        <EditText
+                            android:id="@+id/et_concejal_mas"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:hint="@string/counter_votos_concejal"
+                            android:inputType="number" />
+                    </LinearLayout>
+
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+
+
+
+            <EditText
+                android:id="@+id/et_comments"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_dp_medium"
+                android:layout_marginBottom="@dimen/dimen_dp_small"
+                android:inputType="textEmailAddress|textMultiLine"
+                android:lines="20"
+                android:minLines="3"
+                android:background="@drawable/rounded_rectangle_margin_accent"
+                android:gravity="start|top"
+                android:hint="@string/counter_observaciones"
+                android:paddingLeft="@dimen/dimen_dp_medium"
+                android:paddingTop="@dimen/dimen_dp_medium"
+                android:paddingBottom="@dimen/dimen_dp_medium" />
+
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_picture_height"
+                android:padding="@dimen/dimen_sp_large"
+                android:layout_marginBottom="@dimen/dimen_dp_small"
+                android:layout_marginTop="@dimen/dimen_dp_medium"
+                app:cardBackgroundColor="@color/colorWhite"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="2dp"
+                app:cardPreventCornerOverlap="false"
+                app:cardUseCompatPadding="false">
+
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/img_picture"
+                        android:layout_width="wrap_content"
+                        android:onClick="imageOptionsShow"
+                        android:layout_gravity="center"
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@drawable/ic_camera" />
+                </FrameLayout>
+            </androidx.cardview.widget.CardView>
+
+            <Button
+                android:id="@+id/btn_register_vote"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_dp_medium"
+                android:layout_marginBottom="@dimen/dimen_dp_xlarge"
+                android:layout_weight="0.01"
+                android:background="@drawable/rounded_rectangle_shape_red"
+                android:onClick="saveCounter"
+                android:paddingTop="@dimen/dimen_dp_large"
+                android:paddingBottom="@dimen/dimen_dp_large"
+                android:text="@string/counter_register"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/colorWhite" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

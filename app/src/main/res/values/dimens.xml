@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="dimen_dp_xxlarge">64dp</dimen>
+    <dimen name="dimen_dp_xlarge">32dp</dimen>
+    <dimen name="dimen_dp_large">16dp</dimen>
+    <dimen name="dimen_dp_medium">8dp</dimen>
+    <dimen name="dimen_dp_small">4dp</dimen>
+    <dimen name="dimen_dp_xsmall">2dp</dimen>
+
+
+    <dimen name="dimen_picture_height">120dp</dimen>
+    <dimen name="dimen_logo_width">300dp</dimen>
+    <dimen name="dimen_logo_height">150dp</dimen>
+    <dimen name="dimen_logo_margin_top">-30dp</dimen>
+    <dimen name="dimen_progress_bar_margin">12dp</dimen>
+
+
+    <dimen name="dimen_sp_xxlarge">64sp</dimen>
+    <dimen name="dimen_sp_xlarge">32sp</dimen>
+    <dimen name="dimen_sp_large">16sp</dimen>
+    <dimen name="dimen_sp_medium">8sp</dimen>
+    <dimen name="dimen_sp_small">4sp</dimen>
+    <dimen name="dimen_sp_xsmall">2sp</dimen>
+
+    <dimen name="dimen_sp_result_cases">16sp</dimen>
+    <dimen name="dimen_sp_result_cases_title">20sp</dimen>
+    <dimen name="dimen_sp_spinner">14sp</dimen>
+
+</resources>

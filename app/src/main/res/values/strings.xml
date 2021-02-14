@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">JallallaVotos</string>
+
+    <!--Login Screen-->
+    <string name="login_progress_dialog_message">Autenticando...</string>
+    <string name="login_success">Autenticación Exitosa</string>
+    <string name="login_action">Autenticarme</string>
+    <string name="login_title">Autenticación de Usuario</string>
+    <string name="login_ci">Cédula de Identidad</string>
+    <string name="login_password">Contraseña</string>
+    <string name="login_validation">Los campos no pueden estar vacíos</string>
+    <string name="login_error_user">Usuario incorrecto</string>
+
+    <!--List Screen-->
+    <string name="list_nombre_militante">Militante:</string>
+    <string name="list_title">Seleccione su mesa asignada</string>
+    <string name="list_progress_dialog_message">Descargando lista...</string>
+    <string name="item_mesa">Mesa: </string>
+    <string name="item_enter">Ingresar: </string>
+    <string name="item_distrito">Distrito:</string>
+    <string name="item_colegio">Colegio:</string>
+
+    <!--Counter Screen-->
+    <string name="counter_form_title">Ingrese la cantidad de votos:</string>
+    <string name="counter_observaciones">Observaciones</string>
+    <string name="counter_votos_alcalde">Votos Alcalde</string>
+    <string name="counter_votos_concejal">Votos Concejal</string>
+    <string name="counter_partido_jallalla">JALLALLA</string>
+    <string name="counter_partido_mas">M.A.S</string>
+    <string name="counter_register">Registrar Conteo</string>
+    <string name="counter_error_empty_data">El conteo del movimiento Jallalla no puede estar vacío</string>
+    <string name="counter_dialog_captura_title">Fotografía de papeleta</string>
+    <string name="counter_dialog_captura_message">¿Cómo deseas obtener la imagen de la papeleta?</string>
+    <string name="counter_dialog_captura_option_fotografia">Tomar fotografía</string>
+    <string name="counter_dialog_captura_option_file">Seleccionar imagen</string>
+    <string name="counter_dialog_captura_option_cancel">Cancelar</string>
+    <string name="counter_progress_dialog_message">Registrando datos...</string>
+
+</resources>
