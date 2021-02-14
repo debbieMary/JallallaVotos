@@ -23,6 +23,13 @@ public class Militantes {
     @ColumnInfo(name = "ci")
     private Integer ci;
 
+    @NonNull
+    @ColumnInfo(name = "nombres")
+    private String nombres;
+
+    @NonNull
+    @ColumnInfo(name = "apellidos")
+    private String apellidos;
 
     @NonNull
     public String getUsuario() {
@@ -34,10 +41,19 @@ public class Militantes {
         return id;
     }
 
-
     @NonNull
     public Integer getCi() {
         return ci;
+    }
+
+    @NonNull
+    public String getNombres() {
+        return nombres;
+    }
+
+    @NonNull
+    public String getApellidos() {
+        return nombres;
     }
 
     public void setUsuario(@NonNull String usuario) {
@@ -51,4 +67,13 @@ public class Militantes {
     public void setCi(@NonNull Integer ci) {
         this.ci = ci;
     }
+
+    public void setNombres(@NonNull String ci) {
+        this.nombres = nombres;
+    }
+
+    public void setApellidos(@NonNull String ci) {
+        this.apellidos = apellidos;
+    }
+
 }

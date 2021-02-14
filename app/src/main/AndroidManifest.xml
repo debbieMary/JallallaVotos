@@ -16,17 +16,26 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".CounterData.view.CounterFormActivity"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:name=".Splash.view.SplashActivity"
             android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity" />
-        <activity android:name=".ListTasks.view.ListTaskActivity" android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Login.view.LoginActivity" android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".CounterData.view.CounterFormActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".ListTasks.view.ListTaskActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Login.view.LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

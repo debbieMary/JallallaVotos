@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -260,7 +261,7 @@ public class CounterFormActivity extends AppCompatActivity implements CounterVie
     }
 
     public void refreshList(){
-        Intent intent= new Intent(this, ListActivity.class);
+        Intent intent= new Intent(this, ListTaskActivity.class);
         listTaskActivity.listTaskActivityClass.finish();
         finish();
         startActivity(intent);

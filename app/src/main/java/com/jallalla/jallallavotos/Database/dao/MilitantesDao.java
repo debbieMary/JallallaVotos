@@ -14,7 +14,7 @@ import java.util.List;
 public interface MilitantesDao {
 
     @Query("SELECT * from militante ORDER by id")
-    List<Militantes> getMilitante();
+    Militantes getMilitante();
 
 
     @Query("DELETE FROM militante")
