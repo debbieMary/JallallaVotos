@@ -19,10 +19,11 @@ public class SplashActivity extends AppCompatActivity {
 
     Timer timer;
     private static final String TAG="[SPLASH ACTIVITY]";
+
     private static final String DATABASE_NAME_JALLALLA="jallallaVotosDB";
-    private static final Integer timerMilliseconds=3000;
     public static MyDataBase myDataBase;
 
+    private static final Integer timerMilliseconds=3000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

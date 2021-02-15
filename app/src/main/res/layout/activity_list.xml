@@ -6,9 +6,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+        android:id="@+id/toolbar_list"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/colorPrimary"
@@ -20,11 +19,27 @@
 
         <TextView
             android:id="@+id/tv_title"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/list_title"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/colorWhite" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center|end"
+                android:onClick="logout"
+                android:padding="@dimen/dimen_dp_large"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_logout" />
+        </FrameLayout>
+
+
+
 
     </androidx.appcompat.widget.Toolbar>
 
@@ -51,6 +66,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="TextView" />
+
 
 
 </LinearLayout>

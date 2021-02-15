@@ -1,6 +1,7 @@
 package com.jallalla.jallallavotos.Login.view;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.room.Room;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -9,6 +10,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.jallalla.jallallavotos.Database.MyDataBase;
+import com.jallalla.jallallavotos.Database.entities.Militantes;
 import com.jallalla.jallallavotos.Entities.LoginBody;
 import com.jallalla.jallallavotos.Entities.Militante;
 import com.jallalla.jallallavotos.ListTasks.view.ListTaskActivity;
@@ -25,10 +28,15 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     EditText etCi, etPassword;
     private final String INCORRECT_USER="[INCORRECT_USER]";
 
+    private static final String DATABASE_NAME_JALLALLA="jallallaVotosDB";
+    public static MyDataBase myDataBase;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        myDataBase= Room.databaseBuilder(getApplicationContext(),  MyDataBase.class, DATABASE_NAME_JALLALLA).allowMainThreadQueries().build();
 
         loginPresenter = new LoginPresenterImpl(this, new LoginInteractorImpl());
 
@@ -69,18 +77,28 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     @Override
     public void populateMilitante(Militante militante) {
         Toast.makeText(this, getString(R.string.login_success), Toast.LENGTH_LONG).show();
-        goToListTask(militante.getId(), militante.getNombres(),militante.getApellidos());
+        insertMilitanteValues(militante);
+    }
 
+    public void insertMilitanteValues(Militante militante){
+        Militantes militantesDatabase= new Militantes();
+        militantesDatabase.setId(militante.getId());
+        militantesDatabase.setCi(militante.getCi());
+        militantesDatabase.setNombres(militante.getNombres());
+        militantesDatabase.setApellidos(militante.getApellidos());
+        militantesDatabase.setUsuario(militante.getUsuario());
+        myDataBase.militantesDao().insertMilitante(militantesDatabase);
+        goToListTask();
+    }
+
+    public void goToListTask(){
+        Intent intent= new Intent(this, ListTaskActivity.class );
+        startActivity(intent);
+        finish();
 
     }
 
-    public void goToListTask(Integer id,  String nombres, String apellidos){
-        Intent intent= new Intent(this, ListTaskActivity.class );
-        intent.putExtra("id_militante", id);
-        intent.putExtra("nombres", nombres);
-        intent.putExtra("apellidos", apellidos);
-        startActivity(intent);
-        finish();
+    public void insertUserValues(){
 
     }
 

@@ -68,11 +68,11 @@ public class Militantes {
         this.ci = ci;
     }
 
-    public void setNombres(@NonNull String ci) {
+    public void setNombres(@NonNull String nombres) {
         this.nombres = nombres;
     }
 
-    public void setApellidos(@NonNull String ci) {
+    public void setApellidos(@NonNull String apellidos) {
         this.apellidos = apellidos;
     }
 

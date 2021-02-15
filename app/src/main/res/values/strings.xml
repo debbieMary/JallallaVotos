@@ -13,6 +13,10 @@
 
     <!--List Screen-->
     <string name="list_nombre_militante">Militante:</string>
+    <string name="list_menu_logout_title">Cerrar Sesión</string>
+    <string name="list_menu_logout_message">¿Realmente deseas cerrar sesión?</string>
+    <string name="list_menu_logout_yes">Si</string>
+    <string name="list_menu_logout_no">Cancelar</string>
     <string name="list_title">Seleccione su mesa asignada</string>
     <string name="list_progress_dialog_message">Descargando lista...</string>
     <string name="item_mesa">Mesa: </string>
