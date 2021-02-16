@@ -34,6 +34,7 @@ import androidx.room.Query;
 import com.jallalla.jallallavotos.Database.entities.ListTaskDetails;
 import com.jallalla.jallallavotos.Database.entities.Militantes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 

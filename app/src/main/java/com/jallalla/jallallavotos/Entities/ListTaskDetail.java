@@ -22,6 +22,9 @@ public class ListTaskDetail {
     @SerializedName("codigo_colegio")
     @Expose
     private Integer codigoColegio;
+    @SerializedName("estado")
+    @Expose
+    private Integer estado;
 
     /**
      * No args constructor for use in serialization
@@ -38,8 +41,9 @@ public class ListTaskDetail {
      * @param nombreDistrito
      * @param nroMesa
      * @param nombreUnidad
+     * @param estado
      */
-    public ListTaskDetail(String nombreDistrito, String nombreUnidad, Integer nroMesa, Integer idMesa, String codigoDistrito, Integer codigoColegio) {
+    public ListTaskDetail(String nombreDistrito, String nombreUnidad, Integer nroMesa, Integer idMesa, String codigoDistrito, Integer codigoColegio, Integer estado) {
         super();
         this.nombreDistrito = nombreDistrito;
         this.nombreUnidad = nombreUnidad;
@@ -47,6 +51,7 @@ public class ListTaskDetail {
         this.idMesa = idMesa;
         this.codigoDistrito = codigoDistrito;
         this.codigoColegio = codigoColegio;
+        this.estado = estado;
     }
 
     public String getNombreDistrito() {
@@ -124,6 +129,20 @@ public class ListTaskDetail {
 
     public ListTaskDetail withCodigoColegio(Integer codigoColegio) {
         this.codigoColegio = codigoColegio;
+        return this;
+    }
+
+
+    public Integer getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Integer estado) {
+        this.estado = estado;
+    }
+
+    public ListTaskDetail withEstado(Integer estado) {
+        this.estado = estado;
         return this;
     }
 

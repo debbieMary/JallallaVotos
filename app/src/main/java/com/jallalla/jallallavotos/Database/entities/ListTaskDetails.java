@@ -36,7 +36,7 @@ public class ListTaskDetails {
 
     @NonNull
     @ColumnInfo(name = "codigo_colegio")
-    private String codigo_colegio;
+    private Integer codigo_colegio;
 
     @NonNull
     @ColumnInfo(name = "estado")
@@ -89,11 +89,11 @@ public class ListTaskDetails {
     }
 
     @NonNull
-    public String getCodigo_colegio() {
+    public Integer getCodigo_colegio() {
         return codigo_colegio;
     }
 
-    public void setCodigo_colegio(@NonNull String codigo_colegio) {
+    public void setCodigo_colegio(@NonNull Integer codigo_colegio) {
         this.codigo_colegio = codigo_colegio;
     }
 

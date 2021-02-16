@@ -44,7 +44,7 @@
                     android:textStyle="bold" />
 
                 <ImageView
-                    android:id="@+id/button_enter"
+                    android:id="@+id/img_send_to_server"
                     android:layout_width="wrap_content"
                     android:padding="@dimen/dimen_dp_medium"
                     android:layout_height="wrap_content"
