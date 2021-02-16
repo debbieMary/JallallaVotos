@@ -42,9 +42,15 @@ public class ListTaskAdapter extends RecyclerView.Adapter<ListTaskAdapter.ListTa
         final Integer mesa = misTareas.getIdMesa();
         final String colegio = misTareas.getNombreUnidad();
         final String distrito = misTareas.getCodigoDistrito();
+        final Integer estado = misTareas.getEstado();
         holder.lbl_mesa.setText(context.getString(R.string.item_mesa) +" "+mesa);
         holder.lbl_distrito.setText(distrito);
         holder.lbl_colegio.setText(colegio);
+        if(estado==1){
+            holder.img_send_to_server.setVisibility(View.VISIBLE);
+        }else{
+            holder.img_send_to_server.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -57,12 +63,14 @@ public class ListTaskAdapter extends RecyclerView.Adapter<ListTaskAdapter.ListTa
         public TextView lbl_mesa;
         public TextView lbl_distrito;
         public TextView lbl_colegio;
+        public ImageView img_send_to_server;
 
         public ListTaskViewHolder(View view) {
             super(view);
             lbl_mesa = (TextView) view.findViewById(R.id.lbl_mesa);
             lbl_distrito = (TextView) view.findViewById(R.id.lbl_distrito);
             lbl_colegio = (TextView) view.findViewById(R.id.lbl_colegio);
+            img_send_to_server= (ImageView) view.findViewById(R.id.img_send_to_server);
         }
     }
 }

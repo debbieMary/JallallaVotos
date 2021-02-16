@@ -96,7 +96,7 @@ public class ListTaskActivity extends AppCompatActivity implements ListTaskView 
             listTaskBody.setId(int_id_militante);
             listTaskPresenter.getListTask(listTaskBody);
         } else {
-            fillFromDataBase(myDataBase.listTaskDetailsDao().getListTaksDetails(0));
+            fillFromDataBase(myDataBase.listTaskDetailsDao().getListTaksDetails(2));
         }
     }
 
@@ -195,6 +195,7 @@ public class ListTaskActivity extends AppCompatActivity implements ListTaskView 
                     public void onClick(DialogInterface dialog, int which) {
                         myDataBase.militantesDao().deleteAllMilitante();
                         myDataBase.listTaskDetailsDao().deleteAllListTakDetails();
+                        myDataBase.registerDao().deleteAllRegisterRows();
                         finish();
                     }
                 });

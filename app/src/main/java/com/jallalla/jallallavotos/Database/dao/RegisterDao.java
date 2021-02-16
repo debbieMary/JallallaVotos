@@ -32,21 +32,20 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import com.jallalla.jallallavotos.Database.entities.ListTaskDetails;
-import com.jallalla.jallallavotos.Database.entities.Militantes;
+import com.jallalla.jallallavotos.Database.entities.Register;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
 @Dao
-public interface ListTaskDetailsDao {
+public interface RegisterDao {
 
-    @Query("SELECT * from list_task_details where estado < :ESTADO ORDER by id_mesa")
-    List<ListTaskDetails> getListTaksDetails(Integer ESTADO);
+    @Query("SELECT * from register where id_register = :ID")
+    Register getRegisterWhereId(String ID);
 
-    @Query("DELETE FROM list_task_details")
-    void deleteAllListTakDetails();
+    @Query("DELETE FROM register")
+    void deleteAllRegisterRows();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertListTasksDetails(List<ListTaskDetails> listTaskDetails);
+    void insertRegister(Register register);
 }
