@@ -190,14 +190,18 @@ public class ListTaskActivity extends AppCompatActivity implements ListTaskView,
     }
 
     public void goToPage(Integer position) {
-        Intent intent = new Intent(this, CounterFormActivity.class);
-        intent.putExtra("codigo_colegio", listTaskDetailsArray.get(position).getCodigoColegio());
-        intent.putExtra("codigo_distrito", listTaskDetailsArray.get(position).getCodigoDistrito());
-        intent.putExtra("id_mesa", listTaskDetailsArray.get(position).getIdMesa());
-        intent.putExtra("id_listado_pendiente",int_id_militante + "_" + listTaskDetailsArray.get(position).getCodigoDistrito() + "_" + listTaskDetailsArray.get(position).getCodigoColegio() + "_" + listTaskDetailsArray.get(position).getNroMesa());
-        intent.putExtra("nombre_unidad", listTaskDetailsArray.get(position).getNombreUnidad());
-        intent.putExtra("id_militante", int_id_militante);
-        startActivity(intent);
+        String id_listado_pendiente= int_id_militante + "_" + listTaskDetailsArray.get(position).getCodigoDistrito() + "_" + listTaskDetailsArray.get(position).getCodigoColegio() + "_" + listTaskDetailsArray.get(position).getNroMesa();
+        if(myDataBase.registerDao().getRegisterWhereId(id_listado_pendiente) == null){
+            Intent intent = new Intent(this, CounterFormActivity.class);
+            intent.putExtra("codigo_colegio", listTaskDetailsArray.get(position).getCodigoColegio());
+            intent.putExtra("codigo_distrito", listTaskDetailsArray.get(position).getCodigoDistrito());
+            intent.putExtra("id_mesa", listTaskDetailsArray.get(position).getIdMesa());
+            intent.putExtra("id_listado_pendiente",id_listado_pendiente);
+            intent.putExtra("nombre_unidad", listTaskDetailsArray.get(position).getNombreUnidad());
+            intent.putExtra("id_militante", int_id_militante);
+            startActivity(intent);
+        }
+
     }
 
     public void initListElements() {
