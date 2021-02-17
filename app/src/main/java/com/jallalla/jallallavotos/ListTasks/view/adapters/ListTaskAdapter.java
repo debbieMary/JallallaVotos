@@ -1,6 +1,7 @@
 package com.jallalla.jallallavotos.ListTasks.view.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.jallalla.jallallavotos.CounterData.view.CounterFormActivity;
 import com.jallalla.jallallavotos.Entities.ListTaskDetail;
 import com.jallalla.jallallavotos.R;
 import com.jallalla.jallallavotos.Utils.GeneralUtils;
@@ -19,7 +21,6 @@ public class ListTaskAdapter extends RecyclerView.Adapter<ListTaskAdapter.ListTa
 
     ArrayList<ListTaskDetail> listTaskDetails;
     Context context;
-    GeneralUtils generalUtils =  new GeneralUtils();
 
     public ListTaskAdapter(ArrayList<ListTaskDetail> listTaskDetails, Context context) {
         this.listTaskDetails = listTaskDetails;
@@ -52,6 +53,8 @@ public class ListTaskAdapter extends RecyclerView.Adapter<ListTaskAdapter.ListTa
             holder.img_send_to_server.setVisibility(View.GONE);
         }
     }
+
+
 
     @Override
     public int getItemCount() {

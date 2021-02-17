@@ -4,10 +4,9 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
+import androidx.room.Room;
 import android.Manifest;
 import android.app.Activity;
-import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
@@ -15,7 +14,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -33,16 +31,14 @@ import com.google.gson.Gson;
 import com.jallalla.jallallavotos.CounterData.model.CounterInteractorImpl;
 import com.jallalla.jallallavotos.CounterData.presenter.CounterPresenter;
 import com.jallalla.jallallavotos.CounterData.presenter.CounterPresenterImpl;
+import com.jallalla.jallallavotos.Database.MyDataBase;
+import com.jallalla.jallallavotos.Database.entities.Register;
 import com.jallalla.jallallavotos.Entities.CounterData;
 import com.jallalla.jallallavotos.Entities.CounterDataBody;
-import com.jallalla.jallallavotos.Entities.LoginBody;
 import com.jallalla.jallallavotos.ListTasks.view.ListTaskActivity;
-import com.jallalla.jallallavotos.Login.model.LoginInteractorImpl;
-import com.jallalla.jallallavotos.Login.presenter.LoginPresenter;
-import com.jallalla.jallallavotos.Login.presenter.LoginPresenterImpl;
-import com.jallalla.jallallavotos.Login.view.LoginActivity;
 import com.jallalla.jallallavotos.R;
 import com.jallalla.jallallavotos.Utils.FileUtils;
+import com.jallalla.jallallavotos.Utils.GeneralUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -54,13 +50,15 @@ import java.util.List;
 
 public class CounterFormActivity extends AppCompatActivity implements CounterView {
 
+   GeneralUtils generalUtils= new GeneralUtils();
+
     CounterDataBody counterDataBody = new CounterDataBody();
     CounterPresenter counterPresenter;
     ProgressDialog progressDialog;
     Bundle bundle;
 
     Integer id_colegio, id_mesa, id_militante;
-    String codigo_distrito, nombre_unidad, sigla;
+    String codigo_distrito, nombre_unidad, id_listado_pendiente;
 
     TextView lbl_info;
     EditText et_jallalla_alcalde, et_jallalla_concejal, et_mas_alcalde, et_mas_concejal, et_comments;
@@ -70,6 +68,9 @@ public class CounterFormActivity extends AppCompatActivity implements CounterVie
     SimpleDateFormat fecha = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
     ListTaskActivity listTaskActivity = new ListTaskActivity();
+
+    private static final String DATABASE_NAME_JALLALLA = "jallallaVotosDB";
+    public static MyDataBase myDataBase;
 
     private final static int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
     private static String[] PERMISSIONS = {
@@ -82,7 +83,7 @@ public class CounterFormActivity extends AppCompatActivity implements CounterVie
     File file;
     final int RC_TAKE_PHOTO = 2;
     public static final int GET_IMAGE = 3;
-    public static String path;
+    public static String path="";
     String base64image;
 
 
@@ -91,12 +92,15 @@ public class CounterFormActivity extends AppCompatActivity implements CounterVie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_counter_form);
 
+        myDataBase = Room.databaseBuilder(getApplicationContext(), MyDataBase.class, DATABASE_NAME_JALLALLA).allowMainThreadQueries().build();
+
         bundle = getIntent().getExtras();
         id_colegio = bundle.getInt("codigo_colegio");
         codigo_distrito = bundle.getString("codigo_distrito");
         id_mesa = bundle.getInt("id_mesa");
         nombre_unidad = bundle.getString("nombre_unidad");
         id_militante = bundle.getInt("id_militante");
+        id_listado_pendiente= bundle.getString("id_listado_pendiente");
 
         counterPresenter = new CounterPresenterImpl(this, new CounterInteractorImpl());
 
@@ -106,7 +110,6 @@ public class CounterFormActivity extends AppCompatActivity implements CounterVie
 
         initializeView();
         setViewValues();
-
         checkPermission();
 
     }
@@ -161,17 +164,38 @@ public class CounterFormActivity extends AppCompatActivity implements CounterVie
 
 
     public void saveCounter(View v) {
-        if (!et_jallalla_alcalde.getText().toString().equals("") || !et_jallalla_concejal.getText().toString().equals("")) {
-            prepareArray();
-            counterPresenter.insertCounterData(counterDataBody);
-        } else {
+        if (!et_jallalla_alcalde.getText().toString().equals("")) {
+           if(!et_jallalla_concejal.getText().toString().equals("")) {
+               if(!path.equals("")){
+                   prepareArrayAndSaveToLocal();
+                   counterPresenter.insertCounterData(counterDataBody);
+               }else{
+                   Toast.makeText(this, getString(R.string.counter_error_empty_data), Toast.LENGTH_LONG).show();
+               }
+           }else{
+               Toast.makeText(this, getString(R.string.counter_error_empty_data), Toast.LENGTH_LONG).show();
+           }
 
+        } else {
             Toast.makeText(this, getString(R.string.counter_error_empty_data), Toast.LENGTH_LONG).show();
         }
     }
 
     //alistar los datos a ser guardados
-    public void prepareArray() {
+    public void prepareArrayAndSaveToLocal() {
+
+        Register newRegister= new Register();
+        newRegister.setId_register(id_listado_pendiente);
+        newRegister.setFecha_alta(fecha.format(fechaYhora.getTime()));
+        newRegister.setFoto(path);
+        newRegister.setId_mesa(String.valueOf(id_mesa));
+        newRegister.setObservaciones(et_comments.getText().toString());
+        newRegister.setVotos_jallalla_alcalde(et_jallalla_alcalde.getText().toString());
+        newRegister.setVotos_jallalla_concejal(et_jallalla_concejal.getText().toString());
+        newRegister.setVotos_mas_alcalde(et_mas_alcalde.getText().toString());
+        newRegister.setVotos_mas_concejal(et_mas_concejal.getText().toString());
+        myDataBase.registerDao().insertRegister(newRegister);
+        myDataBase.listTaskDetailsDao().updateListTaskEstado(1, id_listado_pendiente);
 
         ArrayList<CounterData> counterData = new ArrayList<CounterData>();
 
@@ -231,6 +255,9 @@ public class CounterFormActivity extends AppCompatActivity implements CounterVie
         }
     }
 
+
+
+
     public String getFilename() {
         File file = new File(Environment.getExternalStorageDirectory().getPath(), "jallallaVotos/images");
         if (!file.exists()) {
@@ -252,12 +279,14 @@ public class CounterFormActivity extends AppCompatActivity implements CounterVie
     @Override
     public void populateResponse(String successMessage) {
         Toast.makeText(this, successMessage, Toast.LENGTH_LONG).show();
+        myDataBase.listTaskDetailsDao().updateListTaskEstado(2, id_listado_pendiente);
         refreshList();
     }
 
     @Override
     public void showErrorMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        refreshList();
     }
 
     public void refreshList(){
@@ -305,22 +334,7 @@ public class CounterFormActivity extends AppCompatActivity implements CounterVie
                 btn_camera.setImageBitmap(myBitmap);
             }
         }
-        base64image = getBase64FromPath(path);
-    }
-
-    public static String getBase64FromPath(String path) {
-        String base64 = "";
-        try {/*from   w w w .  ja  va  2s  .  c om*/
-            File file = new File(path);
-            byte[] buffer = new byte[(int) file.length() + 100];
-            @SuppressWarnings("resource")
-            int length = new FileInputStream(file).read(buffer);
-            base64 = Base64.encodeToString(buffer, 0, length,
-                    Base64.DEFAULT);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return base64;
+        base64image = generalUtils.getBase64FromPath(path);
     }
 }
 

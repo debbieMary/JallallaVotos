@@ -30,6 +30,7 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import com.jallalla.jallallavotos.Database.entities.ListTaskDetails;
 import com.jallalla.jallallavotos.Database.entities.Militantes;
@@ -44,9 +45,13 @@ public interface ListTaskDetailsDao {
     @Query("SELECT * from list_task_details where estado < :ESTADO ORDER by id_mesa")
     List<ListTaskDetails> getListTaksDetails(Integer ESTADO);
 
+
     @Query("DELETE FROM list_task_details")
     void deleteAllListTakDetails();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertListTasksDetails(List<ListTaskDetails> listTaskDetails);
+
+    @Query("UPDATE list_task_details SET estado = :ESTADO WHERE id_pendiente = :ID_PENDIENTE")
+    int updateListTaskEstado(Integer ESTADO, String ID_PENDIENTE);
 }

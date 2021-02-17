@@ -17,9 +17,17 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.jallalla.jallallavotos.CounterData.model.CounterInteractorImpl;
+import com.jallalla.jallallavotos.CounterData.presenter.CounterPresenter;
+import com.jallalla.jallallavotos.CounterData.presenter.CounterPresenterImpl;
 import com.jallalla.jallallavotos.CounterData.view.CounterFormActivity;
+import com.jallalla.jallallavotos.CounterData.view.CounterView;
 import com.jallalla.jallallavotos.Database.MyDataBase;
 import com.jallalla.jallallavotos.Database.entities.ListTaskDetails;
+import com.jallalla.jallallavotos.Database.entities.Register;
+import com.jallalla.jallallavotos.Entities.CounterData;
+import com.jallalla.jallallavotos.Entities.CounterDataBody;
 import com.jallalla.jallallavotos.Entities.ListTaskBody;
 import com.jallalla.jallallavotos.Entities.ListTaskDetail;
 import com.jallalla.jallallavotos.ListTasks.model.ListTaskInteractorImpl;
@@ -28,14 +36,16 @@ import com.jallalla.jallallavotos.ListTasks.presenter.ListTaskPresenterImpl;
 import com.jallalla.jallallavotos.ListTasks.view.adapters.ListTaskAdapter;
 import com.jallalla.jallallavotos.ListTasks.view.adapters.RecyclerItemClickListener;
 import com.jallalla.jallallavotos.R;
+import com.jallalla.jallallavotos.Utils.GeneralUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListTaskActivity extends AppCompatActivity implements ListTaskView {
+public class ListTaskActivity extends AppCompatActivity implements ListTaskView, CounterView {
 
     ListTaskBody listTaskBody = new ListTaskBody();
     ListTaskPresenter listTaskPresenter;
+    CounterPresenter counterPresenter;
     ProgressDialog progressDialog;
 
     TextView nombre_militante;
@@ -48,6 +58,7 @@ public class ListTaskActivity extends AppCompatActivity implements ListTaskView 
 
     Integer int_id_militante;
     String string_nombres, string_apellidos;
+    String string_current_id;
 
     private static final String DATABASE_NAME_JALLALLA = "jallallaVotosDB";
     public static MyDataBase myDataBase;
@@ -55,6 +66,8 @@ public class ListTaskActivity extends AppCompatActivity implements ListTaskView 
     public static Activity listTaskActivityClass;
 
     private Toolbar toolbar;
+
+    GeneralUtils generalUtils=  new GeneralUtils();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +80,8 @@ public class ListTaskActivity extends AppCompatActivity implements ListTaskView 
         setMilitanteValues();
 
         listTaskPresenter = new ListTaskPresenterImpl(this, new ListTaskInteractorImpl());
+        counterPresenter = new CounterPresenterImpl(this, new CounterInteractorImpl());
+
         progressDialog = new ProgressDialog(ListTaskActivity.this);
         progressDialog.setMessage(getResources().getString(R.string.list_progress_dialog_message));
         progressDialog.setCancelable(false);
@@ -84,15 +99,61 @@ public class ListTaskActivity extends AppCompatActivity implements ListTaskView 
 
                     @Override
                     public void onLongItemClick(View view, int position) {
-
+                        if(listTaskDetailsArray.get(position).getEstado() == 1){
+                            syncConteoData(position);
+                        }
                     }
                 })
         );
     }
 
 
+    public void  syncConteoData(Integer position){
+        Register register = new Register();
+        register= myDataBase.registerDao().getRegisterWhereId(int_id_militante + "_" + listTaskDetailsArray.get(position).getCodigoDistrito() + "_" + listTaskDetailsArray.get(position).getCodigoColegio() + "_" + listTaskDetailsArray.get(position).getNroMesa());
+        prepareArray(register);
+
+    }
+
+
+    public void prepareArray(Register register){
+
+        string_current_id= register.getId_register();
+
+        CounterDataBody counterDataBody = new CounterDataBody();
+        ArrayList<CounterData> counterData = new ArrayList<CounterData>();
+
+        CounterData counterData1 = new CounterData();
+        counterData1.setFechaAlta(register.getFecha_alta());
+        counterData1.setIdMesa(register.getId_mesa());
+        counterData1.setIdMilitante(String.valueOf(int_id_militante));
+        counterData1.setSigla("JALLALLA");
+        counterData1.setIdPartidoPolitico("1");
+        counterData1.setVotosAlcalde(register.getVotos_jallalla_alcalde());
+        counterData1.setVotosConcejal(register.getVotos_jallalla_concejal());
+
+
+        CounterData counterData2 = new CounterData();
+        counterData2.setFechaAlta(register.getFecha_alta());
+        counterData2.setIdMesa(register.getId_mesa());
+        counterData2.setIdMilitante(String.valueOf(int_id_militante));
+        counterData2.setSigla("MAS");
+        counterData2.setIdPartidoPolitico("2");
+        counterData2.setVotosAlcalde(register.getVotos_mas_alcalde());
+        counterData2.setVotosConcejal(register.getVotos_mas_concejal());
+
+        counterData.add(counterData1);
+        counterData.add(counterData2);
+
+        counterDataBody.setObservaciones(register.getObservaciones());
+        counterDataBody.setDatos(counterData);
+        counterDataBody.setFoto(("data:image/jpeg;base64," + generalUtils.getBase64FromPath(register.getFoto())).replaceAll("\n", ""));
+        Log.e("json", new Gson().toJson(counterDataBody).toString());
+        counterPresenter.insertCounterData(counterDataBody);
+    }
+
     public void checkListData() {
-        if (myDataBase.listTaskDetailsDao().getListTaksDetails(0).size() == 0) {
+       if (myDataBase.listTaskDetailsDao().getListTaksDetails(2).size() == 0) {
             listTaskBody.setId(int_id_militante);
             listTaskPresenter.getListTask(listTaskBody);
         } else {
@@ -113,8 +174,6 @@ public class ListTaskActivity extends AppCompatActivity implements ListTaskView 
             listTaskDetailElement.setEstado(listTasks.get(i).getEstado());
             dataBaseList.add(listTaskDetailElement);
         }
-
-        Log.e("$$$$$","here");
         refreshList(dataBaseList);
     }
 
@@ -135,6 +194,7 @@ public class ListTaskActivity extends AppCompatActivity implements ListTaskView 
         intent.putExtra("codigo_colegio", listTaskDetailsArray.get(position).getCodigoColegio());
         intent.putExtra("codigo_distrito", listTaskDetailsArray.get(position).getCodigoDistrito());
         intent.putExtra("id_mesa", listTaskDetailsArray.get(position).getIdMesa());
+        intent.putExtra("id_listado_pendiente",int_id_militante + "_" + listTaskDetailsArray.get(position).getCodigoDistrito() + "_" + listTaskDetailsArray.get(position).getCodigoColegio() + "_" + listTaskDetailsArray.get(position).getNroMesa());
         intent.putExtra("nombre_unidad", listTaskDetailsArray.get(position).getNombreUnidad());
         intent.putExtra("id_militante", int_id_militante);
         startActivity(intent);
@@ -156,6 +216,19 @@ public class ListTaskActivity extends AppCompatActivity implements ListTaskView 
     @Override
     public void hideProgress() {
         progressDialog.hide();
+    }
+
+    @Override
+    public void populateResponse(String successMessage) {
+        myDataBase.listTaskDetailsDao().updateListTaskEstado(2, string_current_id);
+        Toast.makeText(this, successMessage, Toast.LENGTH_LONG).show();
+        refreshActivity();
+    }
+
+    public void refreshActivity(){
+        Intent intent= new Intent(this, ListTaskActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     @Override
@@ -212,4 +285,5 @@ public class ListTaskActivity extends AppCompatActivity implements ListTaskView 
     public void showErrorMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
+
 }

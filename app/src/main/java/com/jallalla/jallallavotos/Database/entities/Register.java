@@ -11,7 +11,7 @@ public class Register {
     @PrimaryKey
     @NonNull
     @ColumnInfo(name = "id_register")
-    private Integer id_register;
+    private String id_register;
 
     @NonNull
     @ColumnInfo(name = "observaciones")
@@ -20,6 +20,33 @@ public class Register {
     @NonNull
     @ColumnInfo(name = "foto")
     private String foto;
+
+    @NonNull
+    @ColumnInfo(name = "id_mesa")
+    private String id_mesa;
+
+    @NonNull
+    public String getId_mesa() {
+        return id_mesa;
+    }
+
+    public void setId_mesa(@NonNull String id_mesa) {
+        this.id_mesa = id_mesa;
+    }
+
+    @NonNull
+    public String getFecha_alta() {
+        return fecha_alta;
+    }
+
+
+    public void setFecha_alta(@NonNull String fecha_alta) {
+        this.fecha_alta = fecha_alta;
+    }
+
+    @NonNull
+    @ColumnInfo(name = "fecha_alta")
+    private String fecha_alta;
 
     @NonNull
     @ColumnInfo(name = "votos_jallalla_alcalde")
@@ -38,11 +65,11 @@ public class Register {
     private String votos_mas_concejal;
 
     @NonNull
-    public Integer getId_register() {
+    public String getId_register() {
         return id_register;
     }
 
-    public void setId_register(@NonNull Integer id_register) {
+    public void setId_register(@NonNull String id_register) {
         this.id_register = id_register;
     }
 

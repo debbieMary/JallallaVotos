@@ -32,6 +32,7 @@
     <string name="counter_partido_jallalla">JALLALLA</string>
     <string name="counter_partido_mas">M.A.S</string>
     <string name="counter_register">Registrar Conteo</string>
+    <string name="counter_error_empty_picture">Debe elegir o tomar alguna fotografía de la papeleta</string>
     <string name="counter_error_empty_data">El conteo del movimiento Jallalla no puede estar vacío</string>
     <string name="counter_dialog_captura_title">Fotografía de papeleta</string>
     <string name="counter_dialog_captura_message">¿Cómo deseas obtener la imagen de la papeleta?</string>
