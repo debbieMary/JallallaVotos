@@ -19,7 +19,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -86,6 +85,7 @@ public class CounterFormActivity extends AppCompatActivity implements CounterVie
     public static String path="";
     String base64image;
 
+    public static final String TAG = "[COUNTER_ACTIVITY]";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -269,12 +269,12 @@ public class CounterFormActivity extends AppCompatActivity implements CounterVie
     }
 
     @Override
-    public void showProgress() {
+    public void showProgressCounter() {
         progressDialog.show();
     }
 
     @Override
-    public void hideProgress() {
+    public void hideProgressCounter() {
         progressDialog.hide();
     }
 
@@ -286,8 +286,9 @@ public class CounterFormActivity extends AppCompatActivity implements CounterVie
     }
 
     @Override
-    public void showErrorMessage(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    public void showErrorMessageCounter(String message) {
+        Log.e(TAG, message);
+        Toast.makeText(this,  getString(R.string.counter_progress_dialog_error_message), Toast.LENGTH_LONG).show();
         refreshList();
     }
 

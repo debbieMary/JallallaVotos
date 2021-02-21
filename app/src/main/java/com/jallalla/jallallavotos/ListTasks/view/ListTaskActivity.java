@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.jallalla.jallallavotos.CounterData.model.CounterInteractorImpl;
 import com.jallalla.jallallavotos.CounterData.presenter.CounterPresenter;
@@ -47,7 +48,7 @@ public class ListTaskActivity extends AppCompatActivity implements ListTaskView,
     ListTaskBody listTaskBody = new ListTaskBody();
     ListTaskPresenter listTaskPresenter;
     CounterPresenter counterPresenter;
-    ProgressDialog progressDialog;
+    ProgressDialog progressDialogList, progressDialogCounter;
 
     TextView nombre_militante;
 
@@ -61,16 +62,15 @@ public class ListTaskActivity extends AppCompatActivity implements ListTaskView,
     String string_nombres, string_apellidos;
     String string_current_id;
 
+    private static final String TAG = "[LIST_TASK_ACTIVITY]";
+
     private static final String DATABASE_NAME_JALLALLA = "jallallaVotosDB";
     public static MyDataBase myDataBase;
 
     public static Activity listTaskActivityClass;
 
-    private Toolbar toolbar;
-
-    SwipeRefreshLayout swipeContainer;
-
     GeneralUtils generalUtils=  new GeneralUtils();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,17 +79,21 @@ public class ListTaskActivity extends AppCompatActivity implements ListTaskView,
 
         listTaskActivityClass = ListTaskActivity.this;
 
-        listTaskBody.setId(int_id_militante);
-
         myDataBase = Room.databaseBuilder(getApplicationContext(), MyDataBase.class, DATABASE_NAME_JALLALLA).allowMainThreadQueries().build();
+
         setMilitanteValues();
+        listTaskBody.setId(int_id_militante);
 
         listTaskPresenter = new ListTaskPresenterImpl(this, new ListTaskInteractorImpl());
         counterPresenter = new CounterPresenterImpl(this, new CounterInteractorImpl());
 
-        progressDialog = new ProgressDialog(ListTaskActivity.this);
-        progressDialog.setMessage(getResources().getString(R.string.list_progress_dialog_message));
-        progressDialog.setCancelable(false);
+        progressDialogList = new ProgressDialog(ListTaskActivity.this);
+        progressDialogList.setMessage(getResources().getString(R.string.list_progress_dialog_message));
+        progressDialogList.setCancelable(false);
+
+        progressDialogCounter= new ProgressDialog(ListTaskActivity.this);
+        progressDialogCounter.setMessage(getResources().getString(R.string.counter_progress_dialog_message));
+        progressDialogCounter.setCancelable(false);
 
         initListElements();
         checkListData();
@@ -111,12 +115,6 @@ public class ListTaskActivity extends AppCompatActivity implements ListTaskView,
                 })
         );
 
-        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                listTaskPresenter.getListTask(listTaskBody);
-            }
-        });
     }
 
 
@@ -168,11 +166,11 @@ public class ListTaskActivity extends AppCompatActivity implements ListTaskView,
        if (myDataBase.listTaskDetailsDao().getListTaksDetails(2).size() == 0) {
             listTaskPresenter.getListTask(listTaskBody);
         } else {
-            fillFromDataBase(myDataBase.listTaskDetailsDao().getListTaksDetails(2));
+           fillFromDataBaseAndRefreshArray(myDataBase.listTaskDetailsDao().getListTaksDetails(2));
         }
     }
 
-    public void fillFromDataBase(List<ListTaskDetails> listTasks) {
+    public void fillFromDataBaseAndRefreshArray(List<ListTaskDetails> listTasks) {
         ArrayList<ListTaskDetail> dataBaseList = new ArrayList<>();
         for (int i = 0; i < listTasks.size(); i++) {
             ListTaskDetail listTaskDetailElement = new ListTaskDetail();
@@ -216,8 +214,12 @@ public class ListTaskActivity extends AppCompatActivity implements ListTaskView,
 
     }
 
+    public void refreshAction(View v){
+        listTaskPresenter.getListTask(listTaskBody);
+    }
+
+
     public void initListElements() {
-        swipeContainer=(SwipeRefreshLayout)findViewById(R.id.swipeToRefresh);
         nombre_militante = (TextView) findViewById(R.id.lbl_nombre_militante);
         recyclerView = (RecyclerView) findViewById(R.id.rv_task_list);
         layoutManager = new LinearLayoutManager(this);
@@ -227,12 +229,22 @@ public class ListTaskActivity extends AppCompatActivity implements ListTaskView,
 
     @Override
     public void showProgress() {
-        progressDialog.show();
+        progressDialogList.show();
     }
 
     @Override
     public void hideProgress() {
-        progressDialog.hide();
+        progressDialogList.hide();
+    }
+
+    @Override
+    public void showProgressCounter() {
+        progressDialogCounter.show();
+    }
+
+    @Override
+    public void hideProgressCounter() {
+        progressDialogCounter.show();
     }
 
     @Override
@@ -240,6 +252,12 @@ public class ListTaskActivity extends AppCompatActivity implements ListTaskView,
         myDataBase.listTaskDetailsDao().updateListTaskEstado(2, string_current_id);
         Toast.makeText(this, successMessage, Toast.LENGTH_LONG).show();
         refreshActivity();
+    }
+
+    @Override
+    public void showErrorMessageCounter(String message) {
+        Log.e(TAG+"_C", message);
+        Toast.makeText(this,  getString(R.string.counter_progress_dialog_error_message), Toast.LENGTH_LONG).show();
     }
 
     public void refreshActivity(){
@@ -250,8 +268,9 @@ public class ListTaskActivity extends AppCompatActivity implements ListTaskView,
 
     @Override
     public void populateListTask(List<ListTaskDetail> listTasks) {
-        refreshList(listTasks);
         fillDataFromServer(listTasks);
+        fillFromDataBaseAndRefreshArray(myDataBase.listTaskDetailsDao().getListTaksDetails(2));
+
     }
 
 
@@ -300,8 +319,8 @@ public class ListTaskActivity extends AppCompatActivity implements ListTaskView,
 
     @Override
     public void showErrorMessage(String message) {
-        swipeContainer.setRefreshing(false);
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        Log.e(TAG+"_L", message);
+        Toast.makeText(this, getString(R.string.list_progress_dialog_error_message), Toast.LENGTH_LONG).show();
     }
 
 }

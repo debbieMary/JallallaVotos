@@ -23,7 +23,7 @@ public class CounterPresenterImpl implements CounterPresenter, CounterDataIntera
     @Override
     public void onSuccess(String successMessage) {
         if (counterView != null) {
-            counterView.hideProgress();
+            counterView.hideProgressCounter();
             counterView.populateResponse(successMessage);
         }
     }
@@ -31,8 +31,8 @@ public class CounterPresenterImpl implements CounterPresenter, CounterDataIntera
     @Override
     public void onFailed(String message) {
         if (counterView != null) {
-            counterView.hideProgress();
-            counterView.showErrorMessage(message);
+            counterView.hideProgressCounter();
+            counterView.showErrorMessageCounter(message);
         }
     }
 
@@ -42,7 +42,7 @@ public class CounterPresenterImpl implements CounterPresenter, CounterDataIntera
     public void insertCounterData(CounterDataBody counterDataBody) {
         counterInteractor.counterRegister(counterDataBody, this);
         if (counterView != null) {
-            counterView.showProgress();
+            counterView.showProgressCounter();
         }
     }
 

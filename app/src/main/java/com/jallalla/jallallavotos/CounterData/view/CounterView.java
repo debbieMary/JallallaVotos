@@ -3,11 +3,11 @@ package com.jallalla.jallallavotos.CounterData.view;
 import com.jallalla.jallallavotos.Entities.Militante;
 
 public interface CounterView {
-    void showProgress();
+    void showProgressCounter();
 
-    void hideProgress();
+    void hideProgressCounter();
 
     void populateResponse(String successMessage);
 
-    void showErrorMessage(String message);
+    void showErrorMessageCounter(String message);
 }
