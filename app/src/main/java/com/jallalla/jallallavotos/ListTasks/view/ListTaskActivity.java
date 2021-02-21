@@ -17,8 +17,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.jallalla.jallallavotos.CounterData.model.CounterInteractorImpl;
 import com.jallalla.jallallavotos.CounterData.presenter.CounterPresenter;
