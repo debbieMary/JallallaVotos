@@ -107,7 +107,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         if(message.equals(INCORRECT_USER)){
             Toast.makeText(this, getString(R.string.login_error_user), Toast.LENGTH_LONG).show();
         }else{
-            Toast.makeText(this, getString(R.string.list_progress_dialog_error_message), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.login_progress_dialog_error_message), Toast.LENGTH_LONG).show();
         }
 
     }

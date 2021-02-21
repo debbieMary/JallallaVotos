@@ -88,6 +88,7 @@
                             android:layout_marginBottom="@dimen/dimen_dp_large"
                             android:background="@drawable/rounded_rectangle_margin_accent"
                             android:gravity="start|top"
+                            android:inputType="textPassword"
                             android:hint="@string/login_password"
                             android:paddingLeft="@dimen/dimen_dp_medium"
                             android:paddingTop="@dimen/dimen_dp_medium"

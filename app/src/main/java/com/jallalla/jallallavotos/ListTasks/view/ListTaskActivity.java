@@ -242,7 +242,7 @@ public class ListTaskActivity extends AppCompatActivity implements ListTaskView,
 
     @Override
     public void hideProgressCounter() {
-        progressDialogCounter.show();
+        progressDialogCounter.hide();
     }
 
     @Override
@@ -255,6 +255,7 @@ public class ListTaskActivity extends AppCompatActivity implements ListTaskView,
     @Override
     public void showErrorMessageCounter(String message) {
         Log.e(TAG+"_C", message);
+
         Toast.makeText(this,  getString(R.string.counter_progress_dialog_error_message), Toast.LENGTH_LONG).show();
     }
 
