@@ -57,7 +57,7 @@ public class CounterFormActivity extends AppCompatActivity implements CounterVie
     ProgressDialog progressDialog;
     Bundle bundle;
 
-    Integer id_colegio, id_mesa, id_militante;
+    Integer id_colegio, id_mesa, id_militante, numero_de_mesa;
     String codigo_distrito, nombre_unidad, id_listado_pendiente;
 
     TextView lbl_info;
@@ -101,6 +101,8 @@ public class CounterFormActivity extends AppCompatActivity implements CounterVie
         nombre_unidad = bundle.getString("nombre_unidad");
         id_militante = bundle.getInt("id_militante");
         id_listado_pendiente= bundle.getString("id_listado_pendiente");
+        numero_de_mesa= bundle.getInt("numero_de_mesa");
+
 
         counterPresenter = new CounterPresenterImpl(this, new CounterInteractorImpl());
 
@@ -131,7 +133,7 @@ public class CounterFormActivity extends AppCompatActivity implements CounterVie
 
     //asignar valores a la lista
     public void setViewValues() {
-        lbl_info.setText(getString(R.string.item_colegio) + " " + nombre_unidad + " " + getString(R.string.item_mesa) + " " + id_mesa);
+        lbl_info.setText(getString(R.string.item_colegio) + " " + nombre_unidad + " " + getString(R.string.item_mesa) + " " + numero_de_mesa);
     }
 
     //Verificar si existem los permisos de la cámara y el storage
@@ -216,7 +218,7 @@ public class CounterFormActivity extends AppCompatActivity implements CounterVie
         counterData2.setSigla("MAS");
         counterData2.setIdPartidoPolitico("2");
         counterData2.setVotosAlcalde(et_mas_alcalde.getText().toString());
-        counterData2.setVotosConcejal(et_mas_alcalde.getText().toString());
+        counterData2.setVotosConcejal(et_mas_concejal.getText().toString());
 
         counterData.add(counterData1);
         counterData.add(counterData2);

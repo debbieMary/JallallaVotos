@@ -40,7 +40,7 @@ public class ListTaskAdapter extends RecyclerView.Adapter<ListTaskAdapter.ListTa
     @Override
     public void onBindViewHolder(ListTaskAdapter.ListTaskViewHolder holder, int position) {
         ListTaskDetail misTareas = listTaskDetails.get(position);
-        final Integer mesa = misTareas.getIdMesa();
+        final Integer mesa = misTareas.getNroMesa();
         final String colegio = misTareas.getNombreUnidad();
         final String distrito = misTareas.getCodigoDistrito();
         final Integer estado = misTareas.getEstado();

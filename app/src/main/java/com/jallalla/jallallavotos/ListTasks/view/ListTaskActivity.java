@@ -6,6 +6,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -67,6 +68,8 @@ public class ListTaskActivity extends AppCompatActivity implements ListTaskView,
 
     private Toolbar toolbar;
 
+    SwipeRefreshLayout swipeContainer;
+
     GeneralUtils generalUtils=  new GeneralUtils();
 
     @Override
@@ -75,6 +78,8 @@ public class ListTaskActivity extends AppCompatActivity implements ListTaskView,
         setContentView(R.layout.activity_list);
 
         listTaskActivityClass = ListTaskActivity.this;
+
+        listTaskBody.setId(int_id_militante);
 
         myDataBase = Room.databaseBuilder(getApplicationContext(), MyDataBase.class, DATABASE_NAME_JALLALLA).allowMainThreadQueries().build();
         setMilitanteValues();
@@ -105,6 +110,13 @@ public class ListTaskActivity extends AppCompatActivity implements ListTaskView,
                     }
                 })
         );
+
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                listTaskPresenter.getListTask(listTaskBody);
+            }
+        });
     }
 
 
@@ -154,7 +166,6 @@ public class ListTaskActivity extends AppCompatActivity implements ListTaskView,
 
     public void checkListData() {
        if (myDataBase.listTaskDetailsDao().getListTaksDetails(2).size() == 0) {
-            listTaskBody.setId(int_id_militante);
             listTaskPresenter.getListTask(listTaskBody);
         } else {
             fillFromDataBase(myDataBase.listTaskDetailsDao().getListTaksDetails(2));
@@ -196,6 +207,7 @@ public class ListTaskActivity extends AppCompatActivity implements ListTaskView,
             intent.putExtra("codigo_colegio", listTaskDetailsArray.get(position).getCodigoColegio());
             intent.putExtra("codigo_distrito", listTaskDetailsArray.get(position).getCodigoDistrito());
             intent.putExtra("id_mesa", listTaskDetailsArray.get(position).getIdMesa());
+            intent.putExtra("numero_de_mesa", listTaskDetailsArray.get(position).getNroMesa());
             intent.putExtra("id_listado_pendiente",id_listado_pendiente);
             intent.putExtra("nombre_unidad", listTaskDetailsArray.get(position).getNombreUnidad());
             intent.putExtra("id_militante", int_id_militante);
@@ -205,6 +217,7 @@ public class ListTaskActivity extends AppCompatActivity implements ListTaskView,
     }
 
     public void initListElements() {
+        swipeContainer=(SwipeRefreshLayout)findViewById(R.id.swipeToRefresh);
         nombre_militante = (TextView) findViewById(R.id.lbl_nombre_militante);
         recyclerView = (RecyclerView) findViewById(R.id.rv_task_list);
         layoutManager = new LinearLayoutManager(this);
@@ -287,6 +300,7 @@ public class ListTaskActivity extends AppCompatActivity implements ListTaskView,
 
     @Override
     public void showErrorMessage(String message) {
+        swipeContainer.setRefreshing(false);
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
