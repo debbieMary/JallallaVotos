@@ -276,16 +276,18 @@ public class ListTaskActivity extends AppCompatActivity implements ListTaskView,
     public void fillDataFromServer(List<ListTaskDetail> listTasks) {
         List<ListTaskDetails> dataBaseList = new ArrayList<>();
         for (int i = 0; i < listTasks.size(); i++) {
-            ListTaskDetails dataBaseListElement = new ListTaskDetails();
-            dataBaseListElement.setId_pendiente(int_id_militante + "_" + listTasks.get(i).getCodigoDistrito() + "_" + listTasks.get(i).getCodigoColegio() + "_" + listTasks.get(i).getNroMesa());
-            dataBaseListElement.setCodigo_colegio(listTasks.get(i).getCodigoColegio());
-            dataBaseListElement.setCodigo_distrito(listTasks.get(i).getCodigoDistrito());
-            dataBaseListElement.setId_mesa(listTasks.get(i).getIdMesa());
-            dataBaseListElement.setNombre_distrito(listTasks.get(i).getNombreDistrito());
-            dataBaseListElement.setNombre_unidad(listTasks.get(i).getNombreUnidad());
-            dataBaseListElement.setNro_mesa(listTasks.get(i).getNroMesa());
-            dataBaseListElement.setEstado(listTasks.get(i).getEstado());
-            dataBaseList.add(dataBaseListElement);
+            if(myDataBase.registerDao().getRegisterWhereId(int_id_militante + "_" + listTasks.get(i).getCodigoDistrito() + "_" + listTasks.get(i).getCodigoColegio() + "_" + listTasks.get(i).getNroMesa()) == null){
+                ListTaskDetails dataBaseListElement = new ListTaskDetails();
+                dataBaseListElement.setId_pendiente(int_id_militante + "_" + listTasks.get(i).getCodigoDistrito() + "_" + listTasks.get(i).getCodigoColegio() + "_" + listTasks.get(i).getNroMesa());
+                dataBaseListElement.setCodigo_colegio(listTasks.get(i).getCodigoColegio());
+                dataBaseListElement.setCodigo_distrito(listTasks.get(i).getCodigoDistrito());
+                dataBaseListElement.setId_mesa(listTasks.get(i).getIdMesa());
+                dataBaseListElement.setNombre_distrito(listTasks.get(i).getNombreDistrito());
+                dataBaseListElement.setNombre_unidad(listTasks.get(i).getNombreUnidad());
+                dataBaseListElement.setNro_mesa(listTasks.get(i).getNroMesa());
+                dataBaseListElement.setEstado(listTasks.get(i).getEstado());
+                dataBaseList.add(dataBaseListElement);
+            }
         }
         myDataBase.listTaskDetailsDao().insertListTasksDetails(dataBaseList);
     }
