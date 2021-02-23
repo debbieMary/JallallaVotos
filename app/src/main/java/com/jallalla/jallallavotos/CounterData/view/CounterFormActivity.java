@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat;
 import androidx.room.Room;
 import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
@@ -14,6 +15,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -21,6 +23,8 @@ import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -338,6 +342,39 @@ public class CounterFormActivity extends AppCompatActivity implements CounterVie
             }
         }
         base64image = generalUtils.getBase64FromPath(path);
+    }
+    public class ViewDialog {
+
+        public void showDialog(Activity activity, String msg){
+            final Dialog dialog = new Dialog(activity);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setCancelable(false);
+            dialog.setContentView(R.layout.activity_counter_form);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+           /* TextView text = (TextView) dialog.findViewById(R.id.txt_file_path);
+            text.setText(msg);
+
+            Button dialogBtn_cancel = (Button) dialog.findViewById(R.id.btn_cancel);
+            dialogBtn_cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+//                    Toast.makeText(getApplicationContext(),"Cancel" ,Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                }
+            });
+
+            Button dialogBtn_okay = (Button) dialog.findViewById(R.id.btn_okay);
+            dialogBtn_okay.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+//                    Toast.makeText(getApplicationContext(),"Okay" ,Toast.LENGTH_SHORT).show();
+                    dialog.cancel();
+                }
+            });*/
+
+            dialog.show();
+        }
     }
 }
 
