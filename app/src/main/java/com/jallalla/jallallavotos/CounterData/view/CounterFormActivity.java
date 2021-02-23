@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.room.Room;
+
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
@@ -15,17 +16,22 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,19 +59,21 @@ import java.util.List;
 
 public class CounterFormActivity extends AppCompatActivity implements CounterView {
 
-   GeneralUtils generalUtils= new GeneralUtils();
+    GeneralUtils generalUtils = new GeneralUtils();
 
     CounterDataBody counterDataBody = new CounterDataBody();
     CounterPresenter counterPresenter;
     ProgressDialog progressDialog;
     Bundle bundle;
 
+    FrameLayout ly_image;
+
     Integer id_colegio, id_mesa, id_militante, numero_de_mesa;
     String codigo_distrito, nombre_unidad, id_listado_pendiente;
 
     TextView lbl_info;
     EditText et_jallalla_alcalde, et_jallalla_concejal, et_mas_alcalde, et_mas_concejal, et_comments;
-    ImageView btn_camera;
+    ImageView btn_camera, img_zoom;
 
     private Calendar fechaYhora = Calendar.getInstance();
     SimpleDateFormat fecha = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -86,7 +94,7 @@ public class CounterFormActivity extends AppCompatActivity implements CounterVie
     File file;
     final int RC_TAKE_PHOTO = 2;
     public static final int GET_IMAGE = 3;
-    public static String path="";
+    public static String path = "";
     String base64image;
 
     public static final String TAG = "[COUNTER_ACTIVITY]";
@@ -104,9 +112,8 @@ public class CounterFormActivity extends AppCompatActivity implements CounterVie
         id_mesa = bundle.getInt("id_mesa");
         nombre_unidad = bundle.getString("nombre_unidad");
         id_militante = bundle.getInt("id_militante");
-        id_listado_pendiente= bundle.getString("id_listado_pendiente");
-        numero_de_mesa= bundle.getInt("numero_de_mesa");
-
+        id_listado_pendiente = bundle.getString("id_listado_pendiente");
+        numero_de_mesa = bundle.getInt("numero_de_mesa");
 
         counterPresenter = new CounterPresenterImpl(this, new CounterInteractorImpl());
 
@@ -126,6 +133,8 @@ public class CounterFormActivity extends AppCompatActivity implements CounterVie
 
     //inicializar los valores de la vista
     private void initializeView() {
+        ly_image= (FrameLayout) findViewById(R.id.ly_image);
+        img_zoom = (ImageView) findViewById(R.id.img_zoom);
         lbl_info = (TextView) findViewById(R.id.lbl_info);
         et_jallalla_alcalde = (EditText) findViewById(R.id.et_alcalde_jallalla);
         et_jallalla_concejal = (EditText) findViewById(R.id.et_concejal_jallalla);
@@ -171,16 +180,16 @@ public class CounterFormActivity extends AppCompatActivity implements CounterVie
 
     public void saveCounter(View v) {
         if (!et_jallalla_alcalde.getText().toString().equals("")) {
-           if(!et_jallalla_concejal.getText().toString().equals("")) {
-               if(!path.equals("")){
-                   prepareArrayAndSaveToLocal();
-                   counterPresenter.insertCounterData(counterDataBody);
-               }else{
-                   Toast.makeText(this, getString(R.string.counter_error_empty_data), Toast.LENGTH_LONG).show();
-               }
-           }else{
-               Toast.makeText(this, getString(R.string.counter_error_empty_data), Toast.LENGTH_LONG).show();
-           }
+            if (!et_jallalla_concejal.getText().toString().equals("")) {
+                if (!path.equals("")) {
+                    prepareArrayAndSaveToLocal();
+                    counterPresenter.insertCounterData(counterDataBody);
+                } else {
+                    Toast.makeText(this, getString(R.string.counter_error_empty_data), Toast.LENGTH_LONG).show();
+                }
+            } else {
+                Toast.makeText(this, getString(R.string.counter_error_empty_data), Toast.LENGTH_LONG).show();
+            }
 
         } else {
             Toast.makeText(this, getString(R.string.counter_error_empty_data), Toast.LENGTH_LONG).show();
@@ -190,7 +199,7 @@ public class CounterFormActivity extends AppCompatActivity implements CounterVie
     //alistar los datos a ser guardados
     public void prepareArrayAndSaveToLocal() {
 
-        Register newRegister= new Register();
+        Register newRegister = new Register();
         newRegister.setId_register(id_listado_pendiente);
         newRegister.setFecha_alta(fecha.format(fechaYhora.getTime()));
         newRegister.setFoto(path);
@@ -262,8 +271,6 @@ public class CounterFormActivity extends AppCompatActivity implements CounterVie
     }
 
 
-
-
     public String getFilename() {
         File file = new File(Environment.getExternalStorageDirectory().getPath(), "jallallaVotos/images");
         if (!file.exists()) {
@@ -292,12 +299,12 @@ public class CounterFormActivity extends AppCompatActivity implements CounterVie
     @Override
     public void showErrorMessageCounter(String message) {
         Log.e(TAG, message);
-        Toast.makeText(this,  getString(R.string.counter_progress_dialog_error_message), Toast.LENGTH_LONG).show();
+        Toast.makeText(this, getString(R.string.counter_progress_dialog_error_message), Toast.LENGTH_LONG).show();
         refreshList();
     }
 
-    public void refreshList(){
-        Intent intent= new Intent(this, ListTaskActivity.class);
+    public void refreshList() {
+        Intent intent = new Intent(this, ListTaskActivity.class);
         listTaskActivity.listTaskActivityClass.finish();
         finish();
         startActivity(intent);
@@ -328,43 +335,60 @@ public class CounterFormActivity extends AppCompatActivity implements CounterVie
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        boolean isLanscape = true;
         if (requestCode == GET_IMAGE && resultCode == Activity.RESULT_OK) {
             Uri selectedImageUri = data.getData();
             path = FileUtils.getPath(this, selectedImageUri);
             btn_camera.setImageURI(selectedImageUri);
+            isLanscape= false;
 
         } else if (requestCode == RC_TAKE_PHOTO && resultCode == RESULT_OK) {
             File imgFile = new File(path);
             if (imgFile.exists()) {
                 Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
                 btn_camera.setImageBitmap(myBitmap);
+               isLanscape=true;
             }
         }
+        img_zoom.setVisibility(View.VISIBLE);
         base64image = generalUtils.getBase64FromPath(path);
+        setImageViewSize(isLanscape);
     }
-    public class ViewDialog {
 
-        public void showDialog(Activity activity, String msg){
-            final Dialog dialog = new Dialog(activity);
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.setCancelable(false);
-            dialog.setContentView(R.layout.activity_counter_form);
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+    public void setImageViewSize(boolean isLandscape){
+        int frameLayoutWidth=ly_image.getMeasuredWidth();
+        int frameLayoutHeight=ly_image.getMeasuredHeight();
+        if (isLandscape){
+            btn_camera.getLayoutParams().height = (int) (frameLayoutHeight *0.80);
+            btn_camera.getLayoutParams().width = (int) (frameLayoutWidth *0.80);
+        }else{
+            btn_camera.getLayoutParams().height = (int) (frameLayoutWidth *0.80);
+            btn_camera.getLayoutParams().width = (int) (frameLayoutHeight *0.80);
+        }
+    }
 
-           /* TextView text = (TextView) dialog.findViewById(R.id.txt_file_path);
-            text.setText(msg);
 
-            Button dialogBtn_cancel = (Button) dialog.findViewById(R.id.btn_cancel);
-            dialogBtn_cancel.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-//                    Toast.makeText(getApplicationContext(),"Cancel" ,Toast.LENGTH_SHORT).show();
-                    dialog.dismiss();
-                }
-            });
+    public void showDialogImage(View view) {
+        final Dialog dialog = new Dialog(this, R.style.Theme_Dialog);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.activity_zoom);
+        int width = (int) (generalUtils.get_width(this) * 0.90);
+        int height = (int) (generalUtils.get_height(this) * 0.90);
+        dialog.getWindow().setLayout(width, height);
 
-            Button dialogBtn_okay = (Button) dialog.findViewById(R.id.btn_okay);
+        ImageView dialogBtn_close = (ImageView) dialog.findViewById(R.id.img_close);
+        dialogBtn_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        Bitmap myBitmap = BitmapFactory.decodeFile(path);
+        ImageView myImage = (ImageView) dialog.findViewById(R.id.img_picture_complete_123);
+        myImage.setImageBitmap(myBitmap);
+           /* Button dialogBtn_okay = (Button) dialog.findViewById(R.id.btn_okay);
             dialogBtn_okay.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -373,8 +397,8 @@ public class CounterFormActivity extends AppCompatActivity implements CounterVie
                 }
             });*/
 
-            dialog.show();
-        }
+        dialog.show();
     }
+
 }
 

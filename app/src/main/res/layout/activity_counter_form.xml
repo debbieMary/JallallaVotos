@@ -215,8 +215,20 @@
 
 
                 <FrameLayout
+                    android:id="@+id/ly_image"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
+
+                    <ImageButton
+                        android:id="@+id/img_zoom"
+                        android:layout_width="wrap_content"
+                        android:visibility="gone"
+                        android:onClick="showDialogImage"
+                        android:background="@color/colorWhite"
+                        android:padding="@dimen/dimen_dp_large"
+                        android:layout_gravity="top|end"
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@drawable/ic_zoom" />
 
                     <ImageView
                         android:id="@+id/img_picture"

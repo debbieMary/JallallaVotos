@@ -9,38 +9,30 @@
         android:id="@+id/toolbar_list"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:theme="@style/Theme.AppCompat.Light">
 
-
-
-
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/img_close"
                 android:layout_width="wrap_content"
-                android:layout_gravity="center|end"
-                android:onClick="logout"
+                android:layout_gravity="end"
                 android:padding="@dimen/dimen_dp_large"
                 android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_logout" />
+                app:srcCompat="@drawable/ic_close" />
         </FrameLayout>
-
-
-
 
     </androidx.appcompat.widget.Toolbar>
 
-
-
-
-
-
+    <ImageView
+        android:id="@+id/img_picture_complete_123"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:srcCompat="@drawable/ic_camera" />
 
 
 </LinearLayout>

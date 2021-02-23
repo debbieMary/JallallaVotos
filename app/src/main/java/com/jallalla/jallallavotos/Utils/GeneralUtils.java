@@ -1,6 +1,8 @@
 package com.jallalla.jallallavotos.Utils;
 
+import android.app.Activity;
 import android.util.Base64;
+import android.util.DisplayMetrics;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -21,5 +23,21 @@ public class GeneralUtils {
             e.printStackTrace();
         }
         return base64;
+    }
+
+    public int get_height(Activity act)
+    {
+        DisplayMetrics displaymetrics = new DisplayMetrics();
+        act.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+        int height = displaymetrics.heightPixels;
+        return  height;
+    }
+
+    public int get_width(Activity act)
+    {
+        DisplayMetrics displaymetrics = new DisplayMetrics();
+        act.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+        int width = displaymetrics.widthPixels;
+        return  width;
     }
 }
