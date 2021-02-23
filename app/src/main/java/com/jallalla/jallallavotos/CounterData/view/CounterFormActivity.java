@@ -337,10 +337,12 @@ public class CounterFormActivity extends AppCompatActivity implements CounterVie
         super.onActivityResult(requestCode, resultCode, data);
         boolean isLanscape = true;
         if (requestCode == GET_IMAGE && resultCode == Activity.RESULT_OK) {
-            Uri selectedImageUri = data.getData();
-            path = FileUtils.getPath(this, selectedImageUri);
-            btn_camera.setImageURI(selectedImageUri);
-            isLanscape= false;
+            if(data != null){
+                Uri selectedImageUri = data.getData();
+                path = FileUtils.getPath(this, selectedImageUri);
+                btn_camera.setImageURI(selectedImageUri);
+                isLanscape= false;
+            }
 
         } else if (requestCode == RC_TAKE_PHOTO && resultCode == RESULT_OK) {
             File imgFile = new File(path);
@@ -349,10 +351,14 @@ public class CounterFormActivity extends AppCompatActivity implements CounterVie
                 btn_camera.setImageBitmap(myBitmap);
                isLanscape=true;
             }
+        }else{
+            path="";
         }
-        img_zoom.setVisibility(View.VISIBLE);
-        base64image = generalUtils.getBase64FromPath(path);
-        setImageViewSize(isLanscape);
+        if(!path.equals("")){
+            img_zoom.setVisibility(View.VISIBLE);
+            base64image = generalUtils.getBase64FromPath(path);
+            setImageViewSize(isLanscape);
+        }
     }
 
     public void setImageViewSize(boolean isLandscape){
@@ -371,7 +377,7 @@ public class CounterFormActivity extends AppCompatActivity implements CounterVie
     public void showDialogImage(View view) {
         final Dialog dialog = new Dialog(this, R.style.Theme_Dialog);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setCancelable(false);
+        dialog.setCancelable(true);
         dialog.setContentView(R.layout.activity_zoom);
         int width = (int) (generalUtils.get_width(this) * 0.90);
         int height = (int) (generalUtils.get_height(this) * 0.90);
@@ -388,14 +394,6 @@ public class CounterFormActivity extends AppCompatActivity implements CounterVie
         Bitmap myBitmap = BitmapFactory.decodeFile(path);
         ImageView myImage = (ImageView) dialog.findViewById(R.id.img_picture_complete_123);
         myImage.setImageBitmap(myBitmap);
-           /* Button dialogBtn_okay = (Button) dialog.findViewById(R.id.btn_okay);
-            dialogBtn_okay.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-//                    Toast.makeText(getApplicationContext(),"Okay" ,Toast.LENGTH_SHORT).show();
-                    dialog.cancel();
-                }
-            });*/
 
         dialog.show();
     }
